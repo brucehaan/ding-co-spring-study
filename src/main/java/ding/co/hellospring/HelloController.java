@@ -1,13 +1,27 @@
 package ding.co.hellospring;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class HelloController {
+
+    private Map<Long, User> users = new HashMap<>();
+
+    private Long nextId = 1L;
+
+    @PostMapping("/users")
+    public User createUser(
+            @RequestBody
+            User newUser
+    ) {
+        newUser.setId(nextId++);
+        users.put(newUser.getId(), newUser);
+        return newUser;
+    }
 
     @GetMapping("/hello")
     public String hello() {
@@ -30,8 +44,6 @@ public class HelloController {
 
     @GetMapping("/users")
     public List<User> getUserList() {
-        User user1 = new User("Dingco", 30);
-        User user2 = new User("Dingco", 40);
-        return List.of(user1, user2);
+        return users.values().stream().toList();
     }
 }
