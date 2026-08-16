@@ -15,43 +15,20 @@ import java.util.Map;
 @RestController
 public class HelloController {
 
-    private final JdbcTemplate jdbcTemplate;
+    private final UserRepository userRepository;
 
     @Autowired
-    public HelloController(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+    public HelloController(UserRepository userRepository, JdbcTemplate jdbcTemplate) {
+        this.userRepository = userRepository;
     }
 
-    private Map<Long, User> users = new HashMap<>();
-
-    private Long nextId = 1L;
-    private final Object idLock = new Object();
 
     @PostMapping("/users")
     public User createUser(
             @RequestBody
             User newUser
     ) {
-        String sql = "INSERT INTO users (id, name, age) VALUES (?, ?, ?)";
-
-        Long finalId;
-        synchronized (idLock) {
-            Long nextId = jdbcTemplate.queryForObject("SELECT COALESCE(MAX(id), 0) + 1 FROM users", Long.class);
-            if (nextId == null) {
-                nextId = 1L;
-            }
-            finalId = nextId;
-            jdbcTemplate.update(connection -> {
-                PreparedStatement pstmt = connection.prepareStatement(sql);
-                pstmt.setLong(1, finalId);
-                pstmt.setString(2, newUser.getName());
-                pstmt.setInt(3, newUser.getAge());
-                return pstmt;
-            });
-
-            newUser.setId(finalId);
-            return newUser;
-        }
+        return userRepository.save(newUser);
     }
 
     @GetMapping("/hello")
@@ -67,19 +44,11 @@ public class HelloController {
 
     @GetMapping("/user/{id}")
     public User getUserById(@PathVariable Long id) {
-        String sql = "SELECT * FROM users WHERE id = ?";
-
-        return jdbcTemplate.queryForObject(sql, (rs, rowNum) -> {
-            User user1 = new User();
-            user1.setId(rs.getLong("id"));
-            user1.setName(rs.getString("name"));
-            user1.setAge(rs.getInt("age"));
-            return user1;
-        }, id);
+        return userRepository.findById(id).orElse(null);
     }
 
     @GetMapping("/users")
     public List<User> getUserList() {
-        return users.values().stream().toList();
+        return userRepository.findAll();
     }
 }
