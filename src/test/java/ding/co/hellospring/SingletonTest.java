@@ -11,10 +11,13 @@ public class SingletonTest {
     @Autowired
     ApplicationContext ac;
 
+    @Autowired
+    UserRepository userRepository;
+
     @Test
     void pureJava() {
-        UserService userService1 = new UserService();
-        UserService userService2 = new UserService();
+        UserService userService1 = new UserService(userRepository);
+        UserService userService2 = new UserService(userRepository);
 
         System.out.println("userService1 = " + userService1);
         System.out.println("userService2 = " + userService2);
