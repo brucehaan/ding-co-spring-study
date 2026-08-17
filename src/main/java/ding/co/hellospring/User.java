@@ -1,9 +1,12 @@
 package ding.co.hellospring;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "users")
+@Getter @Setter
 public class User {
 
     @Id
@@ -12,6 +15,7 @@ public class User {
 
     private String name;
     private int age;
+    private String grade;
 
     public User(String name, int age) {
         this.name = name;
@@ -20,27 +24,5 @@ public class User {
 
     public User() {
 
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-    public String getName() {
-        return name;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
-    public int getAge() {
-        return age;
     }
 }

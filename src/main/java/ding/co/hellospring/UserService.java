@@ -54,13 +54,24 @@ public class UserService {
     public User join(User user) {
         // 중복 회원 검증
         validateDuplicateNameUser(user);
+
+        calculateGrade(user);
+
         return userRepository.save(user);
     }
 
     private void validateDuplicateNameUser(User user) {
-        Optional<User> byName = userRepository.findByName(user.getName());
-        if (byName.isPresent()) {
-            throw new IllegalArgumentException("이미 존재하는 회원이다.");
+        userRepository.findByName(user.getName())
+                .ifPresent(u -> {
+                    throw new IllegalStateException("이미 가입된 이메일입니다.");
+                });
+    }
+
+    private void calculateGrade(User user) {
+        if (user.getAge() > 50) {
+            user.setGrade("VIP");
+        } else {
+            user.setGrade("NORMAL");
         }
     }
 }
