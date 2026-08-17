@@ -4,6 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -48,7 +51,16 @@ public class UserService {
 //    public UserService(UserRepository userRepository) {
 //        this.userRepository = userRepository;
 //    }
-    public void join() {
-        userRepository.save(new User());
+    public User join(User user) {
+        // 중복 회원 검증
+        validateDuplicateNameUser(user);
+        return userRepository.save(user);
+    }
+
+    private void validateDuplicateNameUser(User user) {
+        Optional<User> byName = userRepository.findByName(user.getName());
+        if (byName.isPresent()) {
+            throw new IllegalArgumentException("이미 존재하는 회원이다.");
+        }
     }
 }
