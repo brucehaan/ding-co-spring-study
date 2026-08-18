@@ -1,5 +1,6 @@
 package ding.co.hellospring;
 
+import ding.co.hellospring.repository.PointRepository;
 import ding.co.hellospring.repository.UserRepository;
 import ding.co.hellospring.service.UserService;
 import org.junit.jupiter.api.Test;
@@ -16,10 +17,13 @@ public class SingletonTest {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    PointRepository pointRepository;
+
     @Test
     void pureJava() {
-        UserService userService1 = new UserService(userRepository);
-        UserService userService2 = new UserService(userRepository);
+        UserService userService1 = new UserService(userRepository, pointRepository);
+        UserService userService2 = new UserService(userRepository, pointRepository);
 
         System.out.println("userService1 = " + userService1);
         System.out.println("userService2 = " + userService2);
