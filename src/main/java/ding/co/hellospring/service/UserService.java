@@ -1,5 +1,7 @@
 package ding.co.hellospring.service;
 
+import ding.co.hellospring.exception.EmailDuplicateException;
+import ding.co.hellospring.exception.UserNotFoundException;
 import ding.co.hellospring.model.Point;
 import ding.co.hellospring.model.User;
 import ding.co.hellospring.repository.PointRepository;
@@ -32,7 +34,7 @@ public class UserService {
     private void validateDuplicateNameUser(User user) {
         userRepository.findByName(user.getName())
                 .ifPresent(u -> {
-                    throw new IllegalStateException("이미 가입된 이메일입니다.");
+                    throw new EmailDuplicateException("이미 가입된 이메일입니다.");
                 });
     }
 
@@ -42,5 +44,11 @@ public class UserService {
         } else {
             user.setGrade("NORMAL");
         }
+    }
+
+    public User findById(Long id) {
+        return userRepository.findById(id).orElseThrow(
+                () -> new UserNotFoundException("ID " + id + "에 대한 사용자를 찾을 수 없다.")
+        );
     }
 }
