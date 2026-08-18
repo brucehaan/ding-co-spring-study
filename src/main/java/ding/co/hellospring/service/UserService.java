@@ -1,11 +1,12 @@
-package ding.co.hellospring;
+package ding.co.hellospring.service;
 
+import ding.co.hellospring.model.Point;
+import ding.co.hellospring.model.User;
+import ding.co.hellospring.repository.PointRepository;
+import ding.co.hellospring.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Optional;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -45,19 +46,25 @@ public class UserService {
      */
     // 3-1. final 키워드 사용 가능 (불변성)
     private final UserRepository userRepository;
+    private final PointRepository pointRepository;
 
     // 3-2. 생성자에서 주입
     // @Autowired (생성자가 1개면 생략 가능)
 //    public UserService(UserRepository userRepository) {
 //        this.userRepository = userRepository;
 //    }
+    @Transactional
     public User join(User user) {
         // 중복 회원 검증
         validateDuplicateNameUser(user);
 
         calculateGrade(user);
 
-        return userRepository.save(user);
+        User savedUser = userRepository.save(user);
+        Point point = new Point(savedUser.getId(), 1000);
+        pointRepository.save(point);
+
+        return savedUser;
     }
 
     private void validateDuplicateNameUser(User user) {

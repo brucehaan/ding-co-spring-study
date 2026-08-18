@@ -1,5 +1,7 @@
-package ding.co.hellospring;
+package ding.co.hellospring.controller;
 
+import ding.co.hellospring.service.UserService;
+import ding.co.hellospring.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

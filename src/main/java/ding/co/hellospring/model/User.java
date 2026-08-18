@@ -1,4 +1,4 @@
-package ding.co.hellospring;
+package ding.co.hellospring.model;
 
 import jakarta.persistence.*;
 import lombok.Getter;

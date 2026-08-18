@@ -1,5 +1,6 @@
-package ding.co.hellospring;
+package ding.co.hellospring.service;
 
+import ding.co.hellospring.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
