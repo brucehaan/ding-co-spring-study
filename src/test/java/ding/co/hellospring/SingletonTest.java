@@ -1,5 +1,7 @@
 package ding.co.hellospring;
 
+import ding.co.hellospring.repository.UserRepository;
+import ding.co.hellospring.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

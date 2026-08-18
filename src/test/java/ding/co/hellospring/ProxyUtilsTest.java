@@ -1,5 +1,6 @@
 package ding.co.hellospring;
 
+import ding.co.hellospring.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.aop.framework.AopProxyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
