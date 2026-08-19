@@ -1,4 +1,4 @@
-깅package ding.co.hellospring.dto;
+package ding.co.hellospring.dto;
 
 import ding.co.hellospring.model.User;
 
