@@ -37,8 +37,8 @@ public class GlobalExceptionHandler {
 
     // 9. @ExceptionHandler 메뉴얼
     // 만약 EmailDuplicateException 소란이 터지면, 이 메서드를 실행해라.
-    @ExceptionHandler(EmailDuplicateException.class)
-    public ResponseEntity<ErrorResponse> handleEmailDuplicateException(EmailDuplicateException ex) {
+    @ExceptionHandler(NameDuplicateException.class)
+    public ResponseEntity<ErrorResponse> handleEmailDuplicateException(NameDuplicateException ex) {
         ErrorResponse response  = new ErrorResponse("EMAIL_DUPLICATE", ex.getMessage());
         // 10. 신호등이 HttpStatus.BAD_REQUEST 400 으로 바뀐 것을 주목
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);

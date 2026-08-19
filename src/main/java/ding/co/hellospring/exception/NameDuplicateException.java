@@ -8,8 +8,8 @@ package ding.co.hellospring.exception;
 // try catch 가 없더라도 크게 코드 구현시에 문제가 없음
 // Spring Transactional -> checked exception 롤백을 하지 않음
 // Unchecked Exception -> 발생하게 되면 자동 롤백
-public class EmailDuplicateException extends RuntimeException {
-    public EmailDuplicateException(String message) {
+public class NameDuplicateException extends RuntimeException {
+    public NameDuplicateException(String message) {
         super(message);
     }
 }
