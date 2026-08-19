@@ -1,5 +1,6 @@
 package ding.co.hellospring.service;
 
+import ding.co.hellospring.dto.UserCreateRequest;
 import ding.co.hellospring.exception.EmailDuplicateException;
 import ding.co.hellospring.exception.UserNotFoundException;
 import ding.co.hellospring.model.Point;
@@ -18,13 +19,15 @@ public class UserService {
     private final PointRepository pointRepository;
 
     @Transactional
-    public User join(User user) {
+    public User join(UserCreateRequest request) {
+        User newUser = request.toEntity();
+
         // 중복 회원 검증
-        validateDuplicateNameUser(user);
+        validateDuplicateNameUser(newUser);
 
-        calculateGrade(user);
+        calculateGrade(newUser);
 
-        User savedUser = userRepository.save(user);
+        User savedUser = userRepository.save(newUser);
         Point point = new Point(savedUser.getId(), 1000);
         pointRepository.save(point);
 

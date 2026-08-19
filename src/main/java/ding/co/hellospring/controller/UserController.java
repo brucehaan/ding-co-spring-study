@@ -1,8 +1,10 @@
 package ding.co.hellospring.controller;
 
+import ding.co.hellospring.dto.UserCreateRequest;
 import ding.co.hellospring.service.UserService;
 import ding.co.hellospring.model.User;
 import ding.co.hellospring.repository.UserRepository;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,10 +19,9 @@ public class UserController {
 
     @PostMapping("/users")
     public User signUp(
-            @RequestBody
-            User newUser
+            @Valid @RequestBody UserCreateRequest request
     ) {
-        return userService.join(newUser);
+        return userService.join(request);
     }
 
     @GetMapping("/user")

@@ -2,8 +2,12 @@ package ding.co.hellospring.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.util.stream.Collectors;
 
 /*
  RestControllerAdvice에 대해서 어노테이션을 붙여놓은 것들을 findAnnotatedBeans에서 찾아줌.
@@ -39,6 +43,17 @@ public class GlobalExceptionHandler {
         // 10. 신호등이 HttpStatus.BAD_REQUEST 400 으로 바뀐 것을 주목
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
+        BindingResult bindingResult = ex.getBindingResult();
+        String errorMessage = bindingResult.getFieldErrors().stream().map(
+                fieldError -> fieldError.getField() + " : " + fieldError.getDefaultMessage()
+        ).collect(Collectors.joining(", "));
+        ErrorResponse errorResponse = new ErrorResponse("INVALID_INPUT_VALUE", ex.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
 
     // 11. 그 외 모든 주방 화재(500) 용 메뉴얼
     @ExceptionHandler(Exception.class)

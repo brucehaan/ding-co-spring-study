@@ -14,6 +14,5 @@ public class EmailService {
     }
 
     void receive(String email, String content) {
-        userService.join(new User(email, 20));
     }
 }
